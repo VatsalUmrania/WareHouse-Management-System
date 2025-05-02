@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Warehouse Management System</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1><i>🏭</i> Warehouse Management System</h1>
+      </div>
+    </header>
+    <div class="system-info">
+        <div class="time-display">
+            <span>Current Date and Time (IST - YYYY-MM-DD HH:MM:SS formatted):</span>
+            <span id="time-display"></span>
+        </div>
+        <div class="user-display">
+            <span>Current User's Login:</span>
+            <span id="current-user">VatsalUmrania</span>
+        </div>
+    </div>
+    <div class="container">
+      <div class="dashboard">
+        <div class="card">
+          <div class="card-title">
+            <i>🌡️</i> Environmental Monitoring
+          </div>
+          <div class="env-data">
+            <div class="env-item temperature">
+              <div>Temperature</div>
+              <div class="env-value" id="temperature">24°C</div>
+              <div>Status: <span id="temp-status">Normal</span></div>
+            </div>
+            <div class="env-item humidity">
+              <div>Humidity</div>
+              <div class="env-value" id="humidity">45%</div>
+              <div>Status: <span id="humidity-status">Normal</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <i>📦</i> Inventory Status
+          </div>
+          <div id="inventory-alerts">
+            <!-- Alerts will be dynamically added here -->
+          </div>
+          <div class="inventory-list" id="inventory-list">
+            <!-- Inventory items will be dynamically added here -->
+          </div>
+        </div>
+
+        <div class="card threshold-card">
+          <div class="card-title">
+            <i>⚙️</i> System Configuration
+          </div>
+          <div class="threshold-controls">
+            <div class="threshold-control">
+              <label for="temp-threshold">Temperature Threshold (°C)</label>
+              <input type="range" id="temp-threshold" min="0" max="50" value="30" />
+              <div class="threshold-values">
+                <span>0°C</span>
+                <span>50°C</span>
+              </div>
+              <div>Current: <span id="current-temp-threshold">30°C</span></div>
+            </div>
+            <div class="threshold-control">
+              <label for="humidity-threshold">Humidity Threshold (%)</label>
+              <input type="range" id="humidity-threshold" min="0" max="100" value="70" />
+              <div class="threshold-values">
+                <span>0%</span>
+                <span>100%</span>
+              </div>
+              <div>Current: <span id="current-humidity-threshold">70%</span></div>
+            </div>
+          </div>
+          <div class="threshold-controls">
+            <div class="threshold-control">
+              <label for="stock-threshold">Low Stock Threshold</label>
+              <input type="range" id="stock-threshold" min="1" max="50" value="10" />
+              <div class="threshold-values">
+                <span>1</span>
+                <span>50</span>
+              </div>
+              <div>Current: <span id="current-stock-threshold">10 units</span></div>
+            </div>
+            <div class="threshold-control">
+              <button id="test-rfid">Simulate RFID Detection</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <i>📝</i> Activity Log
+          </div>
+          <div class="history-log" id="activity-log">
+            <!-- Activity log entries will be dynamically added here -->
+          </div>
+        </div>
+      </div>
+
+      <div id="new-rfid-cards" class="new-rfid-cards">
+        <h3>New RFID Cards</h3>
+        <!-- New RFID cards will be appended here -->
+      </div>
+    </div>
+
+    <!-- Existing RFID Popup -->
+    <div class="popup-overlay" id="rfid-popup">
+      <div class="popup">
+        <div class="popup-header">
+          <h3 class="popup-title">RFID Tag Detected</h3>
+          <button class="close-popup" id="close-popup">&times;</button>
+        </div>
+        <div class="popup-content">
+          <p>RFID Tag ID: <strong id="rfid-tag-id">A1B2C3D4</strong></p>
+          <p>Product: <strong id="rfid-product-name">Unknown Product</strong></p>
+          <p>Please select an action for inventory management:</p>
+          <div class="quantity-control">
+            <label for="item-quantity">Quantity:</label>
+            <input type="number" id="item-quantity" min="1" value="1" />
+          </div>
+        </div>
+        <div class="popup-buttons">
+          <button class="btn-add" id="btn-add-inventory">Add to Inventory</button>
+          <button class="btn-remove" id="btn-remove-inventory">Remove from Inventory</button>
+          <button class="btn-cancel" id="btn-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- New RFID Card Popup -->
+    <div class="popup-overlay" id="new-rfid-popup">
+      <div class="popup">
+        <div class="popup-header">
+          <h3 class="popup-title">New RFID Card Detected</h3>
+          <button class="close-popup" id="close-new-popup">&times;</button>
+        </div>
+        <div class="popup-content">
+          <p>RFID Tag: <strong id="new-rfid-tag"></strong></p>
+          <form id="new-rfid-form">
+            <div class="form-group">
+              <label for="new-product-name">Product Name:</label>
+              <input type="text" id="new-product-name" placeholder="Enter product name" required />
+            </div>
+            <div class="form-group">
+              <label for="new-product-qty">Quantity:</label>
+              <input type="number" id="new-product-qty" min="1" value="1" required />
+            </div>
+          </form>
+        </div>
+        <div class="popup-buttons">
+          <button class="btn-add" id="save-new-rfid">Save</button>
+          <button class="btn-cancel" id="cancel-new-rfid">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./index.js"></script>
+  </body>
+</html>
