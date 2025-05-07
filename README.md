@@ -1,4 +1,3 @@
-# WareHouse-Management-System
 # Warehouse Management System
 
 [![Languages](https://img.shields.io/github/languages/top/VatsalUmrania/WareHouse-Management-System)](https://github.com/VatsalUmrania/WareHouse-Management-System)
@@ -17,16 +16,9 @@ The **Warehouse Management System** is designed to streamline the processes of t
 - **Real-Time Updates**: Monitor stock levels and order statuses in real time.
 - **User-Friendly Interface**: Designed for ease of use with a clean and intuitive UI.
 - **Google-Sheet-Integration**
+
 ---
 
-## 🔧 Technologies Used
-
-| Language       | Percentage |
-|----------------|------------|
-| JavaScript     | 42.8%      |
-| C++            | 30.9%      |
-| CSS            | 14.9%      |
-| HTML           | 11.4%      |
 
 ---
 
@@ -46,12 +38,41 @@ WareHouse-Management-System/
 └── LICENSE            # License file
 ```
 
+---
+
+## 🔌 Hardware Connections
+
+### Power Supply
+- **External 5V** → NodeMCU Vin
+- **NodeMCU 3.3V** → Arduino UNO 3.3V
+- **NodeMCU GND** → Arduino UNO GND
+
+### Communication
+- **NodeMCU D1 (GPIO5)** → Arduino UNO TX
+- **NodeMCU D2 (GPIO4)** → Arduino UNO RX
+
+### Sensors on Arduino UNO
+- **DHT11 Data** → Arduino PIN 2
+- **DHT11 VCC** → Arduino 3.3V
+- **DHT11 GND** → Arduino GND
+
+### RFID RC522
+- **RST** → Arduino PIN 9
+- **SDA (SS)** → Arduino PIN 10
+- **MOSI** → Arduino PIN 11
+- **MISO** → Arduino PIN 12
+- **SCK** → Arduino PIN 13
+- **GND** → Arduino GND
+- **3.3V** → Arduino 3.3V
+
+### Alert System on NodeMCU
+- **Temperature Alert LED** → NodeMCU D5
+- **Stock Alert LED** → NodeMCU D6
+- **Buzzer** → NodeMCU D7
+
+---
+
 ## 🚀 Getting Started
-
-### Prerequisites
-
-1. Ensure you have **Node.js** installed for running JavaScript-based functionalities.
-2. Install a C++ compiler such as **g++** for the backend logic.
 
 ### Installation
 
@@ -63,10 +84,18 @@ WareHouse-Management-System/
 
 2. Open `index.html` in your preferred browser for the front-end interface with the Server.
 
+---
 
+## 🔧 Technologies Used
+
+| Language       | Percentage |
+|----------------|------------|
+| JavaScript     | 42.8%      |
+| C++            | 30.9%      |
+| CSS            | 14.9%      |
+| HTML           | 11.4%      |
 ## 📧 Contact
 
 - **Author**: Vatsal Umrania
 - **GitHub**: [VatsalUmrania](https://github.com/VatsalUmrania)
 - **Email**: [vbumrania@gmail.com](mailto:vbumrania@gmail.com)
-
