@@ -12,7 +12,7 @@ const CONFIG = {
         THRESHOLDS: 'warehouse_thresholds',
         FAILED_REQUESTS: 'failedGoogleSheetsRequests'
     },
-    GOOGLE_SHEETS_URL: 'https://script.google.com/macros/s/AKfycbwHbs0kFNGDp0gJduLp8uZZmg1aM0GLU_uYoxr_fQhCGvmFXCpbuJ-QhAYKk0cNFbl-zQ/exec'
+    GOOGLE_SHEETS_URL: 'https://script.google.com/macros/s/YOUR_APP_SCRIPT_ID/exec'
 };
 
 // Global variables
